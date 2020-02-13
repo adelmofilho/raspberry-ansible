@@ -1,0 +1,19 @@
+- hosts: all
+  become: yes
+  tasks:
+
+    - name: install gitlab-ce dependencies
+      apt:
+        name: ['curl', 'openssh-server', 'ca-certificates', 'postfix', 'apt-transport-https', 'ufw']
+        state: latest
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: install ufw e configure
+      ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: enable ufw
+      ufw:
+        state: enabled     
