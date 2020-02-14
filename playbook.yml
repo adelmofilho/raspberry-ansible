@@ -16,4 +16,10 @@
 
     - name: enable ufw
       ufw:
-        state: enabled     
+        state: enabled
+
+    - name: add Gitlab key
+      apt_key:
+        url: https://packages.gitlab.com/gpg.key
+        state: present
+    
