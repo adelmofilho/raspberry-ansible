@@ -4,7 +4,7 @@
 
     - name: install gitlab-ce dependencies
       apt:
-        name: ['curl', 'openssh-server', 'ca-certificates', 'postfix', 'apt-transport-https', 'ufw']
+        name: ['ufw']
         state: latest
         update_cache: yes
         cache_valid_time: 3600
@@ -18,8 +18,38 @@
       ufw:
         state: enabled
 
-    - name: add Gitlab key
-      apt_key:
-        url: https://packages.gitlab.com/gpg.key
+    - name: install Docker  
+      apt:
+        name: docker.io
         state: present
-    
+        update_cache: true
+
+    - name: add $user to docker group
+      user:
+        name: pi
+        group: docker
+
+        #    - name: install apt fail2ban packages
+        # apt: 
+        # name: ['fail2ban', 'sendmail']   
+        #state: latest
+        #update_cache: yes
+        #cache_valid_time: 3600
+
+    - name: override the basic fail2ban configuration with .local file
+      copy:
+        src: jail.local
+        dest: /etc/fail2ban/jail.local
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: install docker-compose
+      apt:
+        name: docker-compose
+
+    - name: symbolic link
+      file:
+        src: /usr/bin/docker-compose
+        dest: /usr/local/bin/docker-compose
+        state: link

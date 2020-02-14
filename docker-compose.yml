@@ -1,0 +1,14 @@
+version: "3.6"
+services:
+  web:
+    image: 'ulm0/gitlab:latest'
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+    volumes:
+     - '/srv/gitlab/config:/etc/gitlab'
+     - '/srv/gitlab/logs:/var/log/gitlab'
+     - '/srv/gitlab/data:/var/opt/gitlab'
+     - '/srv/gitlab/logs/reconfigure:/var/log/gitlab/reconfigure'
